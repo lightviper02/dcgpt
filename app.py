@@ -1,14 +1,16 @@
 from gpt_index import SimpleDirectoryReader, GPTListIndex, GPTSimpleVectorIndex, LLMPredictor, PromptHelper
 from langchain.chat_models import ChatOpenAI
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+char_text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0) 
 import gradio as gr
 import sys
 import os
 
-os.environ["OPENAI_API_KEY"] = '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'
+os.environ["OPENAI_API_KEY"] = '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'
 
 def construct_index(directory_path):
     max_input_size = 4096
-    num_outputs = 512
+    num_outputs = 256
     max_chunk_overlap = 20
     chunk_size_limit = 600
 
@@ -32,7 +34,7 @@ def chatbot(input_text):
 iface = gr.Interface(fn=chatbot,
                      inputs=gr.components.Textbox(lines=7, label="Enter your text"),
                      outputs="text",
-                     title="Custom-trained AI Chatbot")
+                     title="DC GPT Integration Test")
 
 index = construct_index("docs")
 iface.launch(share=True)
